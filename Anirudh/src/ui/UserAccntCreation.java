@@ -5,7 +5,17 @@
  */
 package ui;
 
+import java.awt.Font;
+
+import javax.swing.ButtonGroup;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 import javax.swing.WindowConstants;
+
+import dao.UserDAO;
+import apphandler.LoginHandler;
+import businessobject.User;
 
 /**
  *
@@ -17,6 +27,7 @@ public class UserAccntCreation extends javax.swing.JInternalFrame {
      * Creates new form UserAccntCreation
      */
     public UserAccntCreation() {
+    	setSize(1000,700);
         initComponents();
         setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         setClosable(true);
@@ -32,32 +43,60 @@ public class UserAccntCreation extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jLabel6 = new javax.swing.JLabel();
+        jLabel6.setBounds(223, 299, 112, 24);
         jRadioButton1 = new javax.swing.JRadioButton();
+        jRadioButton1.setBounds(359, 185, 61, 23);
         jLabel7 = new javax.swing.JLabel();
+        jLabel7.setBounds(223, 264, 91, 24);
         jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButton2.setBounds(513, 185, 76, 23);
         jLabel8 = new javax.swing.JLabel();
+        jLabel8.setBounds(223, 334, 91, 24);
         jLabel10 = new javax.swing.JLabel();
+        jLabel10.setBounds(223, 399, 49, 24);
         jLabel9 = new javax.swing.JLabel();
+        jLabel9.setBounds(223, 369, 91, 24);
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTextArea1 = new javax.swing.JTextArea();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        jScrollPane1.setBounds(359, 399, 251, 135);
+        address = new javax.swing.JTextArea();
+        age = new javax.swing.JTextField();
+        age.setBounds(359, 144, 251, 28);
+        fullName = new javax.swing.JTextField();
+        fullName.setBounds(359, 69, 251, 28);
         jLabel11 = new javax.swing.JLabel();
+        jLabel11.setBounds(223, 551, 105, 24);
         jLabel1 = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
-        jTextField7 = new javax.swing.JTextField();
+        jLabel1.setBounds(223, 73, 70, 27);
+        motherName = new javax.swing.JTextField();
+        motherName.setBounds(359, 364, 251, 28);
+        accType = new javax.swing.JComboBox();
+        accType.setBounds(359, 546, 251, 28);
         jLabel2 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        jLabel2.setBounds(223, 151, 56, 21);
+        dateOfBirth = new javax.swing.JTextField();
+        dateOfBirth.setBounds(359, 259, 251, 28);
         jbtnReset = new javax.swing.JButton();
+        jbtnReset.setBounds(582, 601, 107, 35);
         jLabel3 = new javax.swing.JLabel();
-        jTextField5 = new javax.swing.JTextField();
+        jLabel3.setBounds(223, 188, 48, 24);
+        idProof = new javax.swing.JTextField();
+        idProof.setBounds(359, 294, 251, 28);
         jbtnCreateAccount = new javax.swing.JButton();
+        jbtnCreateAccount.setBounds(312, 601, 214, 34);
         jLabel4 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
+        jLabel4.setBounds(243, 21, 331, 62);
+        fatherName = new javax.swing.JTextField();
+        fatherName.setBounds(359, 329, 251, 28);
         jLabel5 = new javax.swing.JLabel();
-        jTextField8 = new javax.swing.JTextField();
+        jLabel5.setBounds(223, 223, 70, 24);
+        occupation = new javax.swing.JTextField();
+        occupation.setBounds(359, 218, 251, 28);
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        ButtonGroup bg = new ButtonGroup();
+    	bg.add(jRadioButton1);
+    	bg.add(jRadioButton2);
+    	
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel6.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel6.setText("TYPE OF ID PROOF");
@@ -68,11 +107,7 @@ public class UserAccntCreation extends javax.swing.JInternalFrame {
         jLabel7.setText("DATE OF BIRTH");
 
         jRadioButton2.setText("Female");
-        jRadioButton2.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jRadioButton2ActionPerformed(evt);
-            }
-        });
+        
 
         jLabel8.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel8.setText("FATHER'S NAME");
@@ -83,35 +118,38 @@ public class UserAccntCreation extends javax.swing.JInternalFrame {
         jLabel9.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel9.setText("MOTHER'S NAME");
 
-        jTextArea1.setColumns(20);
-        jTextArea1.setRows(5);
-        jScrollPane1.setViewportView(jTextArea1);
+        address.setColumns(20);
+        address.setRows(5);
+        jScrollPane1.setViewportView(address);
 
         jLabel11.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel11.setText("TYPE OF ACCOUNT");
 
         jLabel1.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
-        jLabel1.setText("NAME");
+        jLabel1.setText("FULL NAME");
 
         jLabel2.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel2.setText("AGE");
 
         jbtnReset.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jbtnReset.setText("RESET");
-        jbtnReset.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnResetActionPerformed(evt);
-            }
-        });
+        
 
         jLabel3.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel3.setText("GENDER");
 
         jbtnCreateAccount.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         jbtnCreateAccount.setText("CREATE ACCOUNT");
+        
         jbtnCreateAccount.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jbtnCreateAccountActionPerformed(evt);
+            }
+        });
+        
+        jbtnReset.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbtnResetActionPerformed(evt);
             }
         });
 
@@ -120,135 +158,112 @@ public class UserAccntCreation extends javax.swing.JInternalFrame {
 
         jLabel5.setFont(new java.awt.Font("Consolas", 1, 12)); // NOI18N
         jLabel5.setText("OCCUPATION");
+        
+        accType.addItem("SAVINGS");
+        accType.addItem("CURRENT");
+        
+        
+        getContentPane().setLayout(null);
+        getContentPane().add(jLabel8);
+        getContentPane().add(fatherName);
+        getContentPane().add(jLabel6);
+        getContentPane().add(idProof);
+        getContentPane().add(jLabel1);
+        getContentPane().add(fullName);
+        getContentPane().add(jLabel2);
+        getContentPane().add(age);
+        getContentPane().add(jLabel3);
+        getContentPane().add(jLabel5);
+        getContentPane().add(jLabel7);
+        getContentPane().add(dateOfBirth);
+        getContentPane().add(occupation);
+        getContentPane().add(jRadioButton1);
+        getContentPane().add(jRadioButton2);
+        getContentPane().add(jLabel9);
+        getContentPane().add(jLabel10);
+        getContentPane().add(jLabel11);
+        getContentPane().add(motherName);
+        getContentPane().add(jScrollPane1);
+        getContentPane().add(accType);
+        getContentPane().add(jbtnCreateAccount);
+        getContentPane().add(jbtnReset);
+        getContentPane().add(jLabel4);
+        
+        JLabel lblUserId = new JLabel();
+        lblUserId.setText("USER ID & PASSWD");
+        lblUserId.setFont(new Font("Consolas", Font.BOLD, 12));
+        lblUserId.setBounds(223, 112, 124, 27);
+        getContentPane().add(lblUserId);
+        
+        userId = new JTextField();
+        userId.setBounds(359, 108, 124, 28);
+        getContentPane().add(userId);
+        
+        password = new JTextField();
+        password.setBounds(486, 109, 124, 28);
+        getContentPane().add(password);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(223, 223, 223)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel6)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(80, 80, 80)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel7))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jTextField2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextField8, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jRadioButton1)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jRadioButton2)
-                                        .addGap(21, 21, 21))))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel9)
-                                    .addComponent(jLabel10)
-                                    .addComponent(jLabel11))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(jTextField4)
-                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 251, Short.MAX_VALUE))
-                                    .addComponent(jTextField7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 251, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(312, 312, 312)
-                        .addComponent(jbtnCreateAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 214, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(56, 56, 56)
-                        .addComponent(jbtnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(73, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(188, 188, 188))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 62, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 21, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(13, 13, 13)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jbtnReset, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jbtnCreateAccount, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        pack();
+        //pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jRadioButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jRadioButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jRadioButton2ActionPerformed
-
-    private void jbtnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnResetActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnResetActionPerformed
-
+    private LoginHandler loginHandler = new LoginHandler();
     private void jbtnCreateAccountActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCreateAccountActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jbtnCreateAccountActionPerformed
+    	int ageInt = 0;
+    	String gender = gender = jRadioButton2.isSelected()?"F":"M";
+    	
+    	try{
+    		ageInt = Integer.parseInt(age.getText());
+    	} catch(Exception e) {System.err.println(e);}
+    	
+    	if(userId.getText().trim().equals("") || password.getText().trim().equals("")
+    			|| fullName.getText().trim().equals("") || ageInt < 18) {
+    		JOptionPane.showMessageDialog(null, "Invalid Details. Provide proper user id, password, full name and age.",
+					"Account Creation Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	
+    	int retCode = loginHandler.createUser(userId.getText(),
+    			password.getText(),
+    			fullName.getText(),
+    			ageInt,
+		    	gender,
+		    	occupation.getText(),
+		    	dateOfBirth.getText(),
+		    	idProof.getText(),
+		    	fatherName.getText(),
+		        motherName.getText(),
+		        address.getText(),
+		        accType.getSelectedItem().toString());
+
+		if (retCode == UserDAO.USER_CREATED) {
+			JOptionPane.showMessageDialog(null, "User created successfully",
+					"User Created", JOptionPane.INFORMATION_MESSAGE);
+		} else if (retCode == UserDAO.USER_EXISTS) {
+			JOptionPane.showMessageDialog(null, "User Id already exists",
+					"User Creation Failed", JOptionPane.ERROR_MESSAGE);
+		} else {
+			JOptionPane.showMessageDialog(null, "User creation failed. Check logs for errors.",
+					"User Creation Error", JOptionPane.ERROR_MESSAGE);
+			jbtnResetActionPerformed(null);
+		}
+       
+    }
+    
+    private void jbtnResetActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnCreateAccountActionPerformed
+    	userId.setText("");
+    	password.setText("");
+    	fullName.setText("");
+    	jRadioButton1.setSelected(false);
+        jRadioButton2.setSelected(false);
+        address.setText("");
+        age.setText("");
+        dateOfBirth.setText("");
+        motherName.setText("");
+        idProof.setText("");
+        fatherName.setText("");
+        accType.setSelectedIndex(0);
+        occupation.setText("");
+    }
 
     /**
      * @param args the command line arguments
@@ -280,6 +295,7 @@ public class UserAccntCreation extends javax.swing.JInternalFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+            	
                 new UserAccntCreation().setVisible(true);
             }
         });
@@ -300,16 +316,17 @@ public class UserAccntCreation extends javax.swing.JInternalFrame {
     private javax.swing.JRadioButton jRadioButton1;
     private javax.swing.JRadioButton jRadioButton2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextArea jTextArea1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
-    private javax.swing.JTextField jTextField5;
-    private javax.swing.JTextField jTextField6;
-    private javax.swing.JTextField jTextField7;
-    private javax.swing.JTextField jTextField8;
+    private javax.swing.JTextArea address;
+    private javax.swing.JTextField age;
+    private javax.swing.JTextField dateOfBirth;
+    private javax.swing.JTextField fullName;
+    private javax.swing.JTextField motherName;
+    private javax.swing.JTextField idProof;
+    private javax.swing.JTextField fatherName;
+    private javax.swing.JComboBox accType;
+    private javax.swing.JTextField occupation;
     private javax.swing.JButton jbtnCreateAccount;
     private javax.swing.JButton jbtnReset;
-    // End of variables declaration//GEN-END:variables
+    private JTextField userId;
+    private JTextField password;
 }
