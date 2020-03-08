@@ -28,5 +28,11 @@ public class User {
 		this.userType = userType;
 	}
 	
+	public static String resolveUserType(int userType) {
+		if(userType == ADMIN) return "ADMIN";
+		if(userType == APPROVER) return "APPROVER";
+		if(userType == CUSTOMER) return "CUSTOMER";
+		return "";
+	}
 	
 }

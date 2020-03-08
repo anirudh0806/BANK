@@ -17,6 +17,11 @@ public class AppMain extends javax.swing.JFrame {
      */
     public AppMain() {
         initComponents();
+        try {
+			Class.forName("dao.DBUtil");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
     }
 
     /**
