@@ -29,10 +29,11 @@ public class UserDAOImpl implements UserDAO {
 			if(set.next()) {
 				return USER_EXISTS;
 			} else {
+				int acNo = (int)(Math.random() * 1000000);
 			int result = DBUtil.executeInsert("Insert into LOGIN_TBL(USER_ID, PASSWORD,CREATION_DATE, ROLE, FULLNAME ,AGE ,GENDER , OCCUPATION ,"
-					+ "DATEOFBIRTH ,IDPROOF,FATHERNAME ,MOTHERNAME,ADDRESS,TYPEOFACCOUNT) VALUES('"+
+					+ "DATEOFBIRTH ,IDPROOF,FATHERNAME ,MOTHERNAME,ADDRESS,TYPEOFACCOUNT, ACC_NO) VALUES('"+
 					username + "','" + password + "',NOW(),'CUSTOMER','" +fullName + "'," +age + ",'" +gender + "','" +occupation + "','" +
-					dateOfBirth + "','" + idProof + "','" +fatherName + "','" +motherName + "','" +address + "','"+typeOfAccount+"')" );
+					dateOfBirth + "','" + idProof + "','" +fatherName + "','" +motherName + "','" +address + "','"+typeOfAccount+"',"+acNo+")" );
 			
 				return USER_CREATED;
 			
@@ -43,4 +44,6 @@ public class UserDAOImpl implements UserDAO {
 		return USER_CREATION_FAILED;
 	}
 
+	public static void main(String[] args) {
+	}
 }
