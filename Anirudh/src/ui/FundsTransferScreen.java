@@ -5,7 +5,14 @@
  */
 package ui;
 
+import java.text.NumberFormat;
+
+import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
+import javax.swing.text.NumberFormatter;
+
+import apphandler.TransactionHandler;
 
 /**
  *
@@ -31,15 +38,36 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+    	NumberFormat intFormat = NumberFormat.getInstance();
+        NumberFormatter formatter = new NumberFormatter(intFormat);
+        formatter.setValueClass(Integer.class);
+        formatter.setMinimum(1);
+        formatter.setMaximum(9999999);
+        formatter.setAllowsInvalid(false);
+        // If you want the value to be committed on each keystroke instead of focus lost
+        formatter.setCommitsOnValidEdit(true);
+        
+        
+        NumberFormat doubleFormat = NumberFormat.getInstance();
+        NumberFormatter dformatter = new NumberFormatter(doubleFormat);
+        dformatter.setValueClass(Double.class);
+        dformatter.setMinimum(1.0);
+        dformatter.setMaximum(100000.0);
+        dformatter.setAllowsInvalid(false);
+        // If you want the value to be committed on each keystroke instead of focus lost
+        dformatter.setCommitsOnValidEdit(true);
+        
+        
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        accountNumberField = new JFormattedTextField(formatter);
+        
+        ifscField = new javax.swing.JTextField();
+        amountField = new JFormattedTextField(dformatter);
+        passwordField = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
 
@@ -60,20 +88,21 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
         jLabel5.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         jLabel5.setText("Re-enter Password ");
 
-        jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jPasswordField1ActionPerformed(evt);
-            }
-        });
-
         jButton1.setFont(new java.awt.Font("Gadugi", 1, 14)); // NOI18N
         jButton1.setText("OKAY");
 
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                okayActionPerformed(evt);
+            }
+        });
+        
         jButton2.setFont(new java.awt.Font("Gadugi", 1, 14)); // NOI18N
         jButton2.setText("EXIT");
+        
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                FundsTransferScreen.this.dispose();
             }
         });
 
@@ -96,10 +125,10 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
                             .addComponent(jLabel5))
                         .addGap(86, 86, 86)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jPasswordField1)
-                            .addComponent(jTextField3, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1)))
+                            .addComponent(passwordField)
+                            .addComponent(amountField, javax.swing.GroupLayout.DEFAULT_SIZE, 135, Short.MAX_VALUE)
+                            .addComponent(ifscField)
+                            .addComponent(accountNumberField)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(255, 255, 255)
                         .addComponent(jButton1)
@@ -115,19 +144,19 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
                 .addGap(54, 54, 54)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(accountNumberField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(ifscField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(passwordField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton1)
@@ -138,13 +167,27 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jPasswordField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
-        // TODO add your handling code here:
+    TransactionHandler tranHandler = new TransactionHandler();
+    private void okayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jPasswordField1ActionPerformed
+    	
+    	
+    	double amount = amountField.getValue() == null? 0: (Double)amountField.getValue();
+    	int account = accountNumberField.getValue() == null? 0:(Integer)accountNumberField.getValue();
+    	
+
+    	if(ifscField.getText().trim().equals("") || passwordField.getText().trim().equals("")
+    			|| account == 0 || amount == 0) {
+    		JOptionPane.showMessageDialog(null, "Invalid Details. Provide proper To-Account, password, Amount and IFSC Code.",
+					"Transaction Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	int output = tranHandler.createTransaction(Login.currentUser.getAccount(), account, ifscField.getText(), amount);
+    	amountField.setValue(null);
+    	accountNumberField.setValue(null);
+    	passwordField.setText("");
+    	ifscField.setText("");
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -189,9 +232,10 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JPasswordField passwordField;
+    private JFormattedTextField accountNumberField;
+    private javax.swing.JTextField ifscField;
+    private JFormattedTextField amountField;
     // End of variables declaration//GEN-END:variables
+    
 }

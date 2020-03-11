@@ -11,32 +11,18 @@ package dao;
  */
 public class BankDAOImpl implements BankDAO {
 
-    @Override
-    public int createAccount(String name, String gender, String occupation, String dateOfBirth, String idProof1, 
-            String idProof2, String idProof3, String fatherName, String motherName, String address, String typeOfAccount, String userName)  {
-        try{
-            String sql = "INSERT INTO user_info (user_name, dob, father_name, mother_name, occupation) VALUES "
-                + "('"+name+"','"+dateOfBirth+"','"+fatherName+"','"+motherName+"','"+occupation+"')";
-            System.out.println(sql);
-        return DBUtil.executeInsert(sql);
-        }catch(Exception e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
+    //CREATE MEMORY TABLE PUBLIC.TRANSACTION_TBL(FROM_AC INTEGER NOT NULL,TO_AC INTEGER NOT NULL,CREATION_DATE DATE,IFSC_CODE VARCHAR(50),AMOUNT DOUBLE)
 
-    @Override
-    public int createLogin(String userId, String password, String role) {
-        try{
-            String sql = "INSERT INTO login_tbl (user_id, password, role, creation_date) VALUES  "
-                + "('"+userId+"','"+password+"','"+role+"',NOW())";
+    public int createTransaction(int fromAct, int toAct, String ifscCode, double amount) {
+    	try{
+            String sql = "INSERT INTO TRANSACTION_TBL (FROM_AC, TO_AC, CREATION_DATE, IFSC_CODE, AMOUNT) VALUES  "
+                + "("+fromAct+","+toAct+",NOW(),'"+ifscCode+"',"+amount+")";
             System.out.println(sql);
-        return DBUtil.executeInsert(sql);
+            return DBUtil.executeInsert(sql);
         }catch(Exception e) {
             e.printStackTrace();
         }
         return -1; 
     }
-    
     
 }

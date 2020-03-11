@@ -8,11 +8,21 @@ public class User {
 	
 	private String username;
 	private int userType;
+	private int account;
 	
 	
-	public User(String username, int userType) {
+	public int getAccount() {
+		return account;
+	}
+
+	public void setAccount(int account) {
+		this.account = account;
+	}
+
+	public User(String username, int userType, int account) {
 		this.username = username;
 		this.userType = userType;
+		this.account = account;
 	}
 	
 	public String getUsername() {

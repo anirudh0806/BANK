@@ -25,6 +25,8 @@ public class Login extends javax.swing.JInternalFrame {
         initComponents();
         setClosable(true);
     }
+    
+    public static User currentUser = null;
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -215,14 +217,14 @@ public class Login extends javax.swing.JInternalFrame {
 		if(userType.equals("APPROVER")) type = User.APPROVER;
 		if(userType.equals("CUSTOMER")) type = User.CUSTOMER;
 		
-		User user = loginHandler.fetchUser(username, password, type);
+		currentUser = loginHandler.fetchUser(username, password, type);
 
-		if (user != null) {
-			if(user.getUserType() == User.ADMIN) {
+		if (currentUser != null) {
+			if(currentUser.getUserType() == User.ADMIN) {
 				appMain.changeMenuForAdmin();
-			} else if(user.getUserType() == User.CUSTOMER) {
+			} else if(currentUser.getUserType() == User.CUSTOMER) {
 				appMain.changeMenuForCustomer();
-			} else if(user.getUserType() == User.APPROVER) {
+			} else if(currentUser.getUserType() == User.APPROVER) {
 				appMain.changeMenuForApprover();
 			}
 		} else {
