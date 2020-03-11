@@ -13,4 +13,6 @@ public interface BankDAO {
 
     public int createTransaction(int fromAct, int toAct, String ifscCode, double amount);
     
+    public Object[][] getTransactions(int fromAct);
+    
 }

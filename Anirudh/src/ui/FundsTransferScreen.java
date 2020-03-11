@@ -182,6 +182,8 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
     		return;
     	}
     	int output = tranHandler.createTransaction(Login.currentUser.getAccount(), account, ifscField.getText(), amount);
+    	JOptionPane.showMessageDialog(null, "Funds Transfer completed successfully.",
+					"Funds Transfer Completed", JOptionPane.INFORMATION_MESSAGE);
     	amountField.setValue(null);
     	accountNumberField.setValue(null);
     	passwordField.setText("");

@@ -5,6 +5,10 @@
  */
 package dao;
 
+import java.sql.ResultSet;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author Anirudh
@@ -23,6 +27,47 @@ public class BankDAOImpl implements BankDAO {
             e.printStackTrace();
         }
         return -1; 
+    }
+    
+    public Object[][] getTransactions(int act) {
+    	List<List<String>> output = new ArrayList<List<String>>();
+    	try{
+    		//"Date", "Description", "Credit", "Debit"
+            String sql = "select CREATION_DATE, 'From Ac: '+From_AC as DESCRIPTION, AMOUNT AS CREDIT, NULL AS DEBIT FROM TRANSACTION_TBL "
+            		+ "where to_AC = "+ act+ " "
+            		+ "UNION ALL "
+            		+ "select CREATION_DATE, 'To Ac: '+TO_AC as DESCRIPTION, NULL AS CREDIT, AMOUNT AS DEBIT FROM TRANSACTION_TBL "
+            		+ "where from_AC = " +act;
+            
+            ResultSet set = DBUtil.executeSelect(sql);
+            
+            while(set.next()) {
+            	List<String> row = new ArrayList<String>();
+            	row.add(set.getString("CREATION_DATE"));
+            	row.add(set.getString("DESCRIPTION"));
+            	String credit = set.getString("CREDIT");
+            	if(credit != null) credit = credit.replace("0E0", "00");
+            	row.add(credit);
+            	String debit = set.getString("DEBIT");
+            	if(debit != null) debit = debit.replace("0E0", "00");
+            	row.add(debit);
+            	output.add(row);
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+    	Object[][] op = new Object[output.size()][4];
+        
+    	int count = 0;
+    	for(List row: output) {
+    		op[count] = new Object[4];
+    		op[count][0] = row.get(0);
+    		op[count][1] = row.get(1);
+    		op[count][2] = row.get(2);
+    		op[count][3] = row.get(3);
+    		count++;
+    	}
+    	return op;
     }
     
 }

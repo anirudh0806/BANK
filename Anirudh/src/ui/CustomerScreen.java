@@ -5,6 +5,8 @@
  */
 package ui;
 
+import apphandler.TransactionHandler;
+
 /**
  *
  * @author Anirudh
@@ -16,8 +18,11 @@ public class CustomerScreen extends javax.swing.JInternalFrame {
      */
     public CustomerScreen() {
         initComponents();
+        
         setClosable(true);
     }
+    
+    private TransactionHandler handler = new TransactionHandler();
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,21 +61,13 @@ public class CustomerScreen extends javax.swing.JInternalFrame {
         jLabel1.setText("Welcome!");
 
         jLabel2.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
-        jLabel2.setText("Your A/C number:");
+        jLabel2.setText("Your A/C number: "+Login.currentUser.getAccount());
 
         jLabel4.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jLabel4.setText("TRANSACTION SUMMARY");
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
+            handler.getTransactions(Login.currentUser.getAccount()),
             new String [] {
                 "Date", "Description", "Credit", "Debit"
             }

@@ -11,4 +11,8 @@ public class TransactionHandler {
 	public int createTransaction(int fromAct, int toAct, String ifscCode, double amount) {
 		return dao.createTransaction(fromAct, toAct, ifscCode, amount);
 	}
+	
+	public Object[][] getTransactions(int account) {
+		return dao.getTransactions(account);
+	}
 }
