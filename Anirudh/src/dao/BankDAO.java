@@ -5,6 +5,8 @@
  */
 package dao;
 
+import java.util.List;
+
 /**
  *
  * @author Anirudh
@@ -14,5 +16,7 @@ public interface BankDAO {
     public int createTransaction(int fromAct, int toAct, String ifscCode, double amount);
     
     public Object[][] getTransactions(int fromAct);
+    
+    public List<Integer> fetchAllAccounts();
     
 }

@@ -190,19 +190,19 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
     	}
     	
     	int output = tranHandler.createTransaction(Login.currentUser.getAccount(), account, ifscField.getText(), amount);
-    	if(output == 0) {
-    		for(TransactionListener listener: transactionListeners){
-    			if(listener != null) {
-	    			listener.amountCredited(amount, account);
-	    			listener.amountDebited(amount, account);
-    			}
-    		}
-	    	JOptionPane.showMessageDialog(null, "Funds Transfer completed successfully.", "Funds Transfer Completed", JOptionPane.INFORMATION_MESSAGE);
+    	
+    	if(output >= 0) {
+    		JOptionPane.showMessageDialog(null, "Funds Transfer completed successfully.", "Funds Transfer Completed", JOptionPane.INFORMATION_MESSAGE);
 	    	amountField.setValue(null);
 	    	accountNumberField.setValue(null);
 	    	passwordField.setText("");
 	    	ifscField.setText("");
 	    	
+    		for(TransactionListener listener: transactionListeners){
+    			if(listener != null) {
+	    			listener.transaction(amount, Login.currentUser.getAccount(), account);
+    			}
+    		}
     	}
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 

@@ -2,7 +2,6 @@ package apphandler;
 
 public interface TransactionListener {
 
-	public void amountCredited(double amount, int fromAcct);
+	public void transaction(double amount, int fromAcct, int toAcct);
 	
-	public void amountDebited(double amount, int toAcct);
 }

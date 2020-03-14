@@ -4,20 +4,30 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.NumberFormat;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.text.NumberFormatter;
+
+import dao.BankDAO;
+import dao.BankDAOImpl;
 
 public class DepositScreen extends JInternalFrame {
 	
 	private JFormattedTextField amountField;
 	
+	BankDAO bankDao = new BankDAOImpl();
+	JComboBox acNoField = new JComboBox();
+	
 	public DepositScreen() {
+		List<Integer> accounts = bankDao.fetchAllAccounts();
+		
 		getContentPane().setLayout(null);
 		
 		JLabel lblDeposits = new JLabel("Deposits");
@@ -40,7 +50,10 @@ public class DepositScreen extends JInternalFrame {
 		lblDepositMethod.setBounds(162, 216, 164, 33);
 		getContentPane().add(lblDepositMethod);
 		
-		JComboBox acNoField = new JComboBox();
+		acNoField.addItem(null);
+		for(int ac: accounts) {
+			acNoField.addItem(ac);
+		}
 		acNoField.setBounds(352, 121, 200, 51);
 		getContentPane().add(acNoField);
 		
@@ -56,13 +69,33 @@ public class DepositScreen extends JInternalFrame {
 		getContentPane().add(amountField);
 		amountField.setColumns(10);
 		
-		JComboBox depositMethodCombo = new JComboBox();
+		String[] depMethods = {"CHEQUE", "CASH", "DD"};
+		JComboBox depositMethodCombo = new JComboBox(depMethods);
 		depositMethodCombo.setBounds(352, 211, 200, 51);
 		getContentPane().add(depositMethodCombo);
 		
 		JButton approveBtn = new JButton("Approve");
 		approveBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				Object ac = acNoField.getSelectedItem();
+				double amount = amountField.getValue() == null? 0: (Double)amountField.getValue();
+				
+				if(ac == null) {
+					JOptionPane.showMessageDialog(null, "Select a customer Account.",
+							"Invalid Account", JOptionPane.ERROR_MESSAGE);
+					return;
+				} if(amount <= 0.0) {
+					JOptionPane.showMessageDialog(null, "Enter proper Amount.",
+							"Invalid Amount", JOptionPane.ERROR_MESSAGE);
+					return;
+				} else {
+					bankDao.createTransaction(0, (Integer)ac, depositMethodCombo.getSelectedItem().toString(), amount);
+					JOptionPane.showMessageDialog(null, "Amount deposited successfully.",
+							"Deposit Complete", JOptionPane.INFORMATION_MESSAGE);
+					
+					acNoField.setSelectedIndex(0);
+					amountField.setValue(0.0);
+				}
 			}
 		});
 		approveBtn.setBounds(227, 295, 117, 29);
@@ -70,6 +103,14 @@ public class DepositScreen extends JInternalFrame {
 		
 		JButton cancelBtn = new JButton("Cancel");
 		cancelBtn.setBounds(380, 295, 117, 29);
+		cancelBtn.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				DepositScreen.this.dispose();
+			}
+			
+		});
 		getContentPane().add(cancelBtn);
 		
 		setClosable(true);

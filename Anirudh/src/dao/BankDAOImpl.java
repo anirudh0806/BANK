@@ -70,4 +70,20 @@ public class BankDAOImpl implements BankDAO {
     	return op;
     }
     
+    public List<Integer> fetchAllAccounts() {
+    	List<Integer> accounts = new ArrayList<>();
+    	try{
+            String sql = "select distinct ACC_NO from LOGIN_TBL";
+            ResultSet set = DBUtil.executeSelect(sql);
+            while(set.next()) {
+            	int acNo = set.getInt("ACC_NO");
+            	if(acNo > 0) {
+            		accounts.add(acNo);
+            	}
+            }
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return accounts; 
+    }
 }

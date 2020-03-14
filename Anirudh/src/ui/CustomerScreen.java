@@ -83,8 +83,13 @@ public class CustomerScreen extends javax.swing.JInternalFrame implements Transa
         double totalDebits = 0.0;
         double totalCredits = 0.0;
         for(Object[] transaction : transactions) {
-        	totalDebits += Double.parseDouble((String)transaction[2]);
-        	totalCredits += Double.parseDouble((String)transaction[3]);
+        	try{
+        		totalCredits += Double.parseDouble((String)transaction[2]);
+        	}catch(Exception e) {}
+        	
+        	try{
+        		totalDebits += Double.parseDouble((String)transaction[3]);
+        	}catch(Exception e) {}
         }
         
         Login.currentUser.setBalance(totalCredits - totalDebits);
@@ -124,22 +129,24 @@ public class CustomerScreen extends javax.swing.JInternalFrame implements Transa
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
 
+	
 	@Override
-	public void amountCredited(double amount, int fromAcct) {
-		double balance  = Login.currentUser.getBalance();
-		Login.currentUser.setBalance(balance + amount);
-		
-		updateBalance(sdf.format(new Date()), "From Ac: "+fromAcct, format.format(amount), "");
-	}
-	@Override
-	public void amountDebited(double amount, int toAcct) {
-		double balance  = Login.currentUser.getBalance();
-		Login.currentUser.setBalance(balance - amount);
-		updateBalance(sdf.format(new Date()), "To Ac: "+toAcct, "", format.format(amount));
+	public void transaction(double amount, int fromAcct, int toAcct) {
+		if(fromAcct == Login.currentUser.getAccount()) {
+			double balance  = Login.currentUser.getBalance();
+			Login.currentUser.setBalance(balance - amount);
+			updateBalance(sdf.format(new Date()), "To Ac: "+toAcct, "", format.format(amount));
+		}
+		if(toAcct == Login.currentUser.getAccount()) {
+			double balance  = Login.currentUser.getBalance();
+			Login.currentUser.setBalance(balance + amount);
+			updateBalance(sdf.format(new Date()), "From Ac: "+fromAcct, "", format.format(amount));
+		}
 	}
 	
 	private void updateBalance(String dt, String description, String credit, String debit) {
 		lblYourBalance.setText("Your Balance: " + format.format(Login.currentUser.getBalance()));
+		lblYourBalance.invalidate();
 		
 		if(transactions != null) {
 			DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
