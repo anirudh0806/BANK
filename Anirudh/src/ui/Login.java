@@ -105,7 +105,7 @@ public class Login extends javax.swing.JInternalFrame {
         jtxtPassword.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
         jComboBox1.setFont(new java.awt.Font("Arial", 1, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUSTOMER", "ADMINISTRATOR", "APPROVER" }));
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CUSTOMER", "ADMINISTRATOR", "TELLER" }));
         jComboBox1.setAlignmentX(1.0F);
         jComboBox1.setAlignmentY(1.0F);
         jComboBox1.setAutoscrolls(true);
@@ -214,7 +214,7 @@ public class Login extends javax.swing.JInternalFrame {
 		
 		int type = User.CUSTOMER;
 		if(userType.equals("ADMINISTRATOR")) type = User.ADMIN;
-		if(userType.equals("APPROVER")) type = User.APPROVER;
+		if(userType.equals("TELLER")) type = User.TELLER;
 		if(userType.equals("CUSTOMER")) type = User.CUSTOMER;
 		
 		currentUser = loginHandler.fetchUser(username, password, type);
@@ -224,8 +224,8 @@ public class Login extends javax.swing.JInternalFrame {
 				appMain.changeMenuForAdmin();
 			} else if(currentUser.getUserType() == User.CUSTOMER) {
 				appMain.changeMenuForCustomer();
-			} else if(currentUser.getUserType() == User.APPROVER) {
-				appMain.changeMenuForApprover();
+			} else if(currentUser.getUserType() == User.TELLER) {
+				appMain.changeMenuForTeller();
 			}
 		} else {
 			JOptionPane.showMessageDialog(null, "Invalid Login Details",

@@ -5,13 +5,22 @@
  */
 package ui;
 
+import java.awt.Font;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import javax.swing.JLabel;
+import javax.swing.table.DefaultTableModel;
+
 import apphandler.TransactionHandler;
+import apphandler.TransactionListener;
 
 /**
  *
  * @author Anirudh
  */
-public class CustomerScreen extends javax.swing.JInternalFrame {
+public class CustomerScreen extends javax.swing.JInternalFrame implements TransactionListener {
 
     /**
      * Creates new form CustomerScreen
@@ -36,10 +45,13 @@ public class CustomerScreen extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
+        jLabel1.setBounds(82, 59, 80, 22);
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        jLabel2.setBounds(82, 93, 180, 22);
         jLabel4 = new javax.swing.JLabel();
+        jLabel4.setBounds(326, 176, 257, 26);
         jScrollPane2 = new javax.swing.JScrollPane();
+        jScrollPane2.setBounds(164, 214, 515, 180);
         jTable2 = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -63,99 +75,86 @@ public class CustomerScreen extends javax.swing.JInternalFrame {
         jLabel2.setFont(new java.awt.Font("Consolas", 0, 18)); // NOI18N
         jLabel2.setText("Your A/C number: "+Login.currentUser.getAccount());
 
+        format.setMaximumFractionDigits(2);
         jLabel4.setFont(new java.awt.Font("Arial Black", 0, 18)); // NOI18N
         jLabel4.setText("TRANSACTION SUMMARY");
 
+        transactions = handler.getTransactions(Login.currentUser.getAccount());
+        double totalDebits = 0.0;
+        double totalCredits = 0.0;
+        for(Object[] transaction : transactions) {
+        	totalDebits += Double.parseDouble((String)transaction[2]);
+        	totalCredits += Double.parseDouble((String)transaction[3]);
+        }
+        
+        Login.currentUser.setBalance(totalCredits - totalDebits);
+        
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
-            handler.getTransactions(Login.currentUser.getAccount()),
+        	transactions,
             new String [] {
                 "Date", "Description", "Credit", "Debit"
             }
         ));
+        jLabel2.setSize(400, 30);
         jScrollPane2.setViewportView(jTable2);
+        getContentPane().setLayout(null);
+        getContentPane().add(jLabel2);
+        getContentPane().add(jLabel1);
+        getContentPane().add(jLabel4);
+        getContentPane().add(jScrollPane2);
+        
+        lblYourBalance.setText("Your Balance: " + format.format(Login.currentUser.getBalance()));
+        lblYourBalance.setFont(new Font("Consolas", Font.PLAIN, 18));
+        lblYourBalance.setBounds(82, 127, 403, 22);
+        getContentPane().add(lblYourBalance);
+        
+        setSize(800,500);
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(82, 82, 82)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel1)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(326, 326, 326)
-                        .addComponent(jLabel4))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(164, 164, 164)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 515, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(123, Short.MAX_VALUE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(59, 59, 59)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel2)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3)
-                .addGap(37, 37, 37)
-                .addComponent(jLabel4)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-
-        pack();
+        //pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CustomerScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CustomerScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CustomerScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CustomerScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CustomerScreen().setVisible(true);
-            }
-        });
-    }
+    JLabel lblYourBalance = new JLabel();
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    // End of variables declaration//GEN-END:variables
+
+	@Override
+	public void amountCredited(double amount, int fromAcct) {
+		double balance  = Login.currentUser.getBalance();
+		Login.currentUser.setBalance(balance + amount);
+		
+		updateBalance(sdf.format(new Date()), "From Ac: "+fromAcct, format.format(amount), "");
+	}
+	@Override
+	public void amountDebited(double amount, int toAcct) {
+		double balance  = Login.currentUser.getBalance();
+		Login.currentUser.setBalance(balance - amount);
+		updateBalance(sdf.format(new Date()), "To Ac: "+toAcct, "", format.format(amount));
+	}
+	
+	private void updateBalance(String dt, String description, String credit, String debit) {
+		lblYourBalance.setText("Your Balance: " + format.format(Login.currentUser.getBalance()));
+		
+		if(transactions != null) {
+			DefaultTableModel model = (DefaultTableModel)jTable2.getModel();
+			Object[] row = {dt, description, credit, debit};
+			model.addRow(row);
+		}
+	}
+	
+	SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+	NumberFormat format = NumberFormat.getInstance();
+	Object[][] transactions = null;
+
+	public static void main(String[] args) {
+		SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+		System.out.println(sdf.format(new Date()));
+	}
 }
+

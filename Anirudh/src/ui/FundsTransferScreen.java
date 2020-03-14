@@ -6,6 +6,7 @@
 package ui;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
@@ -13,6 +14,7 @@ import javax.swing.WindowConstants;
 import javax.swing.text.NumberFormatter;
 
 import apphandler.TransactionHandler;
+import apphandler.TransactionListener;
 
 /**
  *
@@ -181,50 +183,29 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
 					"Transaction Error", JOptionPane.ERROR_MESSAGE);
     		return;
     	}
+    	if(amount > Login.currentUser.getBalance()) {
+    		JOptionPane.showMessageDialog(null, "Insufficient balance. Transaction denied.",
+					"Transaction Error", JOptionPane.ERROR_MESSAGE);
+    		return;
+    	}
+    	
     	int output = tranHandler.createTransaction(Login.currentUser.getAccount(), account, ifscField.getText(), amount);
-    	JOptionPane.showMessageDialog(null, "Funds Transfer completed successfully.",
-					"Funds Transfer Completed", JOptionPane.INFORMATION_MESSAGE);
-    	amountField.setValue(null);
-    	accountNumberField.setValue(null);
-    	passwordField.setText("");
-    	ifscField.setText("");
+    	if(output == 0) {
+    		for(TransactionListener listener: transactionListeners){
+    			if(listener != null) {
+	    			listener.amountCredited(amount, account);
+	    			listener.amountDebited(amount, account);
+    			}
+    		}
+	    	JOptionPane.showMessageDialog(null, "Funds Transfer completed successfully.", "Funds Transfer Completed", JOptionPane.INFORMATION_MESSAGE);
+	    	amountField.setValue(null);
+	    	accountNumberField.setValue(null);
+	    	passwordField.setText("");
+	    	ifscField.setText("");
+	    	
+    	}
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(FundsTransferScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(FundsTransferScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(FundsTransferScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(FundsTransferScreen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new FundsTransferScreen().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
@@ -240,4 +221,9 @@ public class FundsTransferScreen extends javax.swing.JInternalFrame {
     private JFormattedTextField amountField;
     // End of variables declaration//GEN-END:variables
     
+    public void addTransactionListener(TransactionListener listener) {
+    	transactionListeners.add(listener);
+    }
+    
+    private ArrayList<TransactionListener> transactionListeners = new ArrayList<>();
 }

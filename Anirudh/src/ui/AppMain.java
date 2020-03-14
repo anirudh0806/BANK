@@ -41,8 +41,8 @@ public class AppMain extends javax.swing.JFrame {
         logoutMenuItem = new javax.swing.JMenuItem();
         fundsTransferMenuItem = new javax.swing.JMenuItem();
         customerDefaultMenuItem = new javax.swing.JMenuItem();
-        customerListMenuItem = new javax.swing.JMenuItem();
-        approveMenuItem = new javax.swing.JMenuItem();
+        depositMenuItem = new javax.swing.JMenuItem();
+        withdrawlMenuItem = new javax.swing.JMenuItem();
         createUserMenuItem = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -89,15 +89,15 @@ public class AppMain extends javax.swing.JFrame {
             }
         });
         
-        customerListMenuItem.setText("Customer List");
-        customerListMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        depositMenuItem.setText("Deposits");
+        depositMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
             	menuActionPerformed(evt);
             }
         });
         
-        approveMenuItem.setText("Approvals");
-        approveMenuItem.addActionListener(new java.awt.event.ActionListener() {
+        withdrawlMenuItem.setText("Withdrawls");
+        withdrawlMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
             	menuActionPerformed(evt);
             }
@@ -191,15 +191,15 @@ public class AppMain extends javax.swing.JFrame {
     	addScreen(ACCOUNT_CREATION_SCREEN);
     }
     
-    public void changeMenuForApprover() {
+    public void changeMenuForTeller() {
     	this.actionsMenu.remove(loginMenuItem);
     	this.actionsMenu.add(logoutMenuItem);
     	
-    	this.actionsMenu.add(customerListMenuItem);
-    	this.actionsMenu.add(approveMenuItem);
+    	this.actionsMenu.add(depositMenuItem);
+    	this.actionsMenu.add(withdrawlMenuItem);
     	
     	removeScreen(LOGIN_SCREEN);
-    	addScreen(CUST_LIST_SCREEN);
+    	addScreen(DEPOSITS_SCREEN);
     }
     
     private void addScreen(int screen) {
@@ -212,22 +212,28 @@ public class AppMain extends javax.swing.JFrame {
     		customerScreen = new CustomerScreen();
         	homeDesktop.add(customerScreen);
         	customerScreen.setVisible(true);
-    	} else if(screen == APPROVER_SCREEN  && (approverScreen == null || approverScreen.isVisible() == false)) {
-    		approverScreen = new ApproverScreen();
-        	homeDesktop.add(approverScreen);
-        	approverScreen.setVisible(true);
+        	if(fundsTransferScreen!=null) {
+        		fundsTransferScreen.addTransactionListener(customerScreen);
+        	}
+    	} else if(screen == WITHDRAWLS_SCREEN  && (withdrawlScreen == null || withdrawlScreen.isVisible() == false)) {
+    		withdrawlScreen = new WithdrawlScreen();
+        	homeDesktop.add(withdrawlScreen);
+        	withdrawlScreen.setVisible(true);
     	} else if(screen == FUNDS_TRANSFER_SCREEN && (fundsTransferScreen == null || fundsTransferScreen.isVisible() == false)) {
     		fundsTransferScreen = new FundsTransferScreen();
         	homeDesktop.add(fundsTransferScreen);
         	fundsTransferScreen.setVisible(true);
+        	if(customerScreen!=null) {
+        		fundsTransferScreen.addTransactionListener(customerScreen);
+        	}
     	} else if(screen == ACCOUNT_CREATION_SCREEN && (accountCreationScreen == null || accountCreationScreen.isVisible() == false)) {
     		accountCreationScreen = new UserAccntCreation();
         	homeDesktop.add(accountCreationScreen);
         	accountCreationScreen.setVisible(true);
-    	} else if(screen == CUST_LIST_SCREEN  && (custListScreen == null || custListScreen.isVisible() == false)) {
-    		custListScreen = new CustomersList();
-        	homeDesktop.add(custListScreen);
-        	custListScreen.setVisible(true);
+    	} else if(screen == DEPOSITS_SCREEN  && (depositScreen == null || depositScreen.isVisible() == false)) {
+    		depositScreen = new DepositScreen();
+        	homeDesktop.add(depositScreen);
+        	depositScreen.setVisible(true);
     	}
     }
     
@@ -236,15 +242,15 @@ public class AppMain extends javax.swing.JFrame {
     		loginScreen.dispose();
     	} else if(screen == CUSTOMER_SCREEN && customerScreen != null) {
     		customerScreen.dispose();
-    	} else if(screen == APPROVER_SCREEN && approverScreen != null) {
-    		approverScreen.dispose();
+    	} else if(screen == WITHDRAWLS_SCREEN && depositScreen != null) {
+    		depositScreen.dispose();
     		
     	} else if(screen == FUNDS_TRANSFER_SCREEN && fundsTransferScreen != null) {
     		fundsTransferScreen.dispose();
     	} else if(screen == ACCOUNT_CREATION_SCREEN && accountCreationScreen != null) {
     		accountCreationScreen.dispose();
-    	} else if(screen == CUST_LIST_SCREEN && custListScreen != null) {
-    		custListScreen.dispose();
+    	} else if(screen == DEPOSITS_SCREEN && depositScreen != null) {
+    		depositScreen.dispose();
     	}  
     }
 
@@ -267,12 +273,12 @@ public class AppMain extends javax.swing.JFrame {
         	addScreen(CUSTOMER_SCREEN);
         } 
         
-        if(evt.getSource().equals(customerListMenuItem)) {
-        	addScreen(CUST_LIST_SCREEN);
+        if(evt.getSource().equals(depositMenuItem)) {
+        	addScreen(DEPOSITS_SCREEN);
         } 
         
-        if(evt.getSource().equals(approveMenuItem)) {
-        	addScreen(APPROVER_SCREEN);
+        if(evt.getSource().equals(withdrawlMenuItem)) {
+        	addScreen(WITHDRAWLS_SCREEN);
         } 
         if(evt.getSource().equals(createUserMenuItem)) {
         	addScreen(ACCOUNT_CREATION_SCREEN);
@@ -282,17 +288,17 @@ public class AppMain extends javax.swing.JFrame {
     private void removeAllFrames() {
     	removeScreen(LOGIN_SCREEN);
     	removeScreen(CUSTOMER_SCREEN);
-    	removeScreen(APPROVER_SCREEN);
+    	removeScreen(WITHDRAWLS_SCREEN);
     	removeScreen(FUNDS_TRANSFER_SCREEN);
     	removeScreen(ACCOUNT_CREATION_SCREEN);
-    	removeScreen(CUST_LIST_SCREEN);
+    	removeScreen(DEPOSITS_SCREEN);
     }
     
     Login loginScreen = null;
     CustomerScreen customerScreen = null;
     FundsTransferScreen fundsTransferScreen = null;
-    CustomersList custListScreen = null;
-    ApproverScreen approverScreen = null;
+    DepositScreen depositScreen = null;
+    WithdrawlScreen withdrawlScreen = null;
     UserAccntCreation accountCreationScreen = null;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JDesktopPane homeDesktop;
@@ -303,18 +309,18 @@ public class AppMain extends javax.swing.JFrame {
     private javax.swing.JMenuItem logoutMenuItem;
     private javax.swing.JMenuItem fundsTransferMenuItem;
     private javax.swing.JMenuItem customerDefaultMenuItem;
-    private javax.swing.JMenuItem customerListMenuItem;
-    private javax.swing.JMenuItem approveMenuItem;
+    private javax.swing.JMenuItem depositMenuItem;
+    private javax.swing.JMenuItem withdrawlMenuItem;
     
     private javax.swing.JMenuItem createUserMenuItem;
     
     
     private static final int LOGIN_SCREEN = 1;
     private static final int CUSTOMER_SCREEN = 2;
-    private static final int APPROVER_SCREEN = 3;
+    private static final int WITHDRAWLS_SCREEN = 3;
     private static final int FUNDS_TRANSFER_SCREEN = 4;
     private static final int ACCOUNT_CREATION_SCREEN = 5;
-    private static final int CUST_LIST_SCREEN = 6;
+    private static final int DEPOSITS_SCREEN = 6;
     
     
     // End of variables declaration//GEN-END:variables

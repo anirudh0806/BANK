@@ -8,15 +8,16 @@ public class UserDAOImpl implements UserDAO {
 
 	@Override
 	public User fetchUser(String username, String password, int userType) {
+		User user = null;
 		try {
 			ResultSet set = DBUtil.executeSelect("SELECT user_id, password, role, ACC_NO from login_tbl where user_id='"+username+"' and password='"+password+"' and role='"+User.resolveUserType(userType)+"'");
 			if(set.next()) {
-				return new User(username, userType, set.getInt("ACC_NO"));
+				user = new User(username, userType, set.getInt("ACC_NO"));
 			}
 		} catch (Exception e) {
 			System.err.println(e);
 		}
-		return null;
+		return user;
 	}
 	
 	@Override

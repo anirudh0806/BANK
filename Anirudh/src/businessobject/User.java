@@ -4,13 +4,21 @@ public class User {
 
 	public static final int CUSTOMER = 1;
 	public static final int ADMIN = 2;
-	public static final int APPROVER = 3;
+	public static final int TELLER = 3;
 	
 	private String username;
 	private int userType;
 	private int account;
+	private double balance = 0.0;
 	
-	
+	public double getBalance() {
+		return balance;
+	}
+
+	public void setBalance(double balance) {
+		this.balance = balance;
+	}
+
 	public int getAccount() {
 		return account;
 	}
@@ -40,7 +48,7 @@ public class User {
 	
 	public static String resolveUserType(int userType) {
 		if(userType == ADMIN) return "ADMIN";
-		if(userType == APPROVER) return "APPROVER";
+		if(userType == TELLER) return "TELLER";
 		if(userType == CUSTOMER) return "CUSTOMER";
 		return "";
 	}
